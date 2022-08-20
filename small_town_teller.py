@@ -1,3 +1,4 @@
+import pickle
 class Person:
     def __init__(self,id,first_name,last_name):
         self.id = id
@@ -53,21 +54,58 @@ class Bank:
         self.account.remove(account)
         acct.balance = acct.balance + deposit_amount
         self.account.append(acct)
-Person1 = Person(1,"John","Smith")
-print(Person1)
-Account1 = Account(1,"Saving",Person1,1000)
-print(Account1)
-Bank1 = Bank()
-Bank1.add_customer(Person1)
-Bank1.add_account(Person1,Account1)
+
+    def save_data(self):
+
+        with open("/Users/payel/Python/PythonFundamentals.Exercises.Part10/persistent_small_town_teller.pickle",'wb')as f:
+            pickle.dump(self, f)
+
+    def load_data(self):
+        pickle_data = None
+        with open("Users/payel/Python/PythonFundamentals.Exercises.Part10/persistent_small_town_teller.pickle",'rb') as f:
+            while True:
+                try:
+                    pickle_data = pickle.load(f)
+                    break
+                except EOFError:
+                    break
+        self.account = pickle_data.account
+        self.customer = pickle_data.customer
+        self.bank_details = pickle_data.bank_details
+
+class PersistenceUtils():
+
+    def write_pickle(data_to_pickle):
+        with open("Users/payel/Python/PythonFundamentals.Exercises.Part10/persistent_small_town_teller.pickle", 'wb' )as f:
+            pickle.dump(data_to_pickle, f)
+
+    def load_pickle(self):
+        pickle_data = None
+        with open("Users/payel/Python/PythonFundamentals.Exercises.Part10/persistent_small_town_teller.pickle", 'rb')as f:
+            while True:
+                try:
+                    pickle_data = pickle.load(f)
+                    break
+                except EOFError:
+                    break
+        return pickle_data
 
 
-Bank1.balance_inquiry(Account1)
-Bank1.deposit(Account1,200)
-Bank1.balance_inquiry(Account1)
-Bank1.withdrawal(Account1,50)
-Bank1.balance_inquiry(Account1)
-Bank1.remove_account(Account1)
+# Person1 = Person(1,"John","Smith")
+# print(Person1)
+# Account1 = Account(1,"Saving",Person1,1000)
+# print(Account1)
+# Bank1 = Bank()
+# Bank1.add_customer(Person1)
+# Bank1.add_account(Person1,Account1)
+#
+#
+# Bank1.balance_inquiry(Account1)
+# Bank1.deposit(Account1,200)
+# Bank1.balance_inquiry(Account1)
+# Bank1.withdrawal(Account1,50)
+# Bank1.balance_inquiry(Account1)
+# Bank1.remove_account(Account1)
 
 
 
